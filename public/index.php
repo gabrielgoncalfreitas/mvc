@@ -1,9 +1,15 @@
 <?php
 
-
 require '../vendor/autoload.php';
 
-include '../config.php';
-include '../app/Utils/Utils.php';
-include '../app/Utils/Debug.php';
-include '../routes/Web.php';
+require '../app/Utils/Handle.php';
+
+try {
+    require '../config.php';
+    require '../app/Utils/Utils.php';
+    require '../app/Utils/Debug.php';
+    require '../routes/Web.php';
+
+} catch (Throwable $e) {
+    handle($e);
+}

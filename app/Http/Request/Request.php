@@ -10,14 +10,19 @@ class Request
 
     public function __construct()
     {
-        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->method  = $_SERVER['REQUEST_METHOD'];
         $this->headers = getallheaders();
-        $this->all = array_merge($_GET, $_POST);
+        $this->all     = $_REQUEST;
     }
 
     public function all()
     {
         $this->all = (object) $this->all;
         return $this->all;
+    }
+
+    public static function request($key, $default = null)
+    {
+        return isset($_REQUEST[$key]) ? $_REQUEST[$key] : $default;
     }
 }

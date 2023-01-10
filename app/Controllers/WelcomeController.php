@@ -11,12 +11,7 @@ class WelcomeController
         return view('home');
     }
 
-    public function post()
+    public function post($id)
     {
-        $request = new Request();
-        $all = $request->all();
-
-        var_dump($all->input->);
-        // dd($all);
     }
 }

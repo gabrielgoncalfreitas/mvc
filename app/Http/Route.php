@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Request\Request;
 class Route
 {
     private static $method;
@@ -13,34 +14,44 @@ class Route
         self::$uri    = $_SERVER['PATH_INFO'] ?? '/';
     }
 
-    public static function checkParams($uri, $method, $params)
+    public static function checkParams($uri, $method, $args)
     {
         self::construct();
 
-        if (self::$method == $method && self::$uri == $uri && isset($params)) {
-            self::executeParams($params);
-        } else if (self::$method != $method && self::$uri == $uri && isset($params)) {
+        if (self::$method == $method && self::$uri == $uri && isset($args)) {
+            self::executeParams($args);
+        } else if (self::$method != $method && self::$uri == $uri && isset($args)) {
             echo 'This route accepts only GET!';
             return;
         }
     }
 
-    public static function executeParams($params)
+    public static function executeParams($args)
     {
-        if (is_callable($params)) {
-            $params();
-        } else if (is_array($params)) {
-            (new $params[0])->{$params[1]}(isset($params) ? $params : null);
+        if (is_callable($args)) {
+            $args();
+        } else if (is_array($args)) {
+
+            $className  = $args[0];
+            $methodName = $args[1];
+
+            if (class_exists($className)) {
+
+                $class = new $className;
+                if (method_exists($class, $methodName)) {
+                    $class->$methodName();
+                }
+            }
         }
     }
 
-    public static function get(string $uri, $params)
+    public static function get(string $uri, $args)
     {
-        self::checkParams($uri, 'GET', $params);
+        self::checkParams($uri, 'GET', $args);
     }
 
-    public static function post(string $uri, $params)
+    public static function post(string $uri, $args)
     {
-        self::checkParams($uri, 'POST', $params);
+        self::checkParams($uri, 'POST', $args);
     }
 }
