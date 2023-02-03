@@ -1,5 +1,5 @@
 {
-    "name": "gabriel/mvc",
+    "name": "ikoding/mvc",
     "autoload": {
         "psr-4": {
             "App\\": "app/"
